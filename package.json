@@ -1,17 +1,17 @@
 {
 	"name":"pwf.js",
-	"version":"0.0.1",
+	"version":"1.0.0",
 	"description":"Container for writing modules",
 	"dependencies":{
-	},
-	"directories": {
-		"test": "test"
 	},
 	"scripts":{
 		"test":"echo Running tests... && mocha --globals testRule"
 	},
 	"main":"lib/pwf.js",
-	"repository":"",
-	"author":"just-paja",
+	"repository":{
+		"type":"git",
+		"url":"https://github.com/just-paja/pwf.js"
+	},
+	"author":"just-paja <just-paja@gmail.com>",
 	"license":"GPLv3"
 }
