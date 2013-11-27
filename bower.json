@@ -1,0 +1,10 @@
+{
+	"name":"pwf.js",
+	"version":"1.0.2",
+	"main":"lib/pwf.js",
+	"ignore":[
+		"test",
+		"LICENSE",
+		"README.md"
+	]
+}
