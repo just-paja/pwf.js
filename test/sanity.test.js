@@ -17,8 +17,8 @@ describe('sanity', function() {
 
 		pwf.register('mod0', function() {});
 
-		assert.throws(function() {
+		assert.doesNotThrow(function() {
 			pwf.register('mod0', function() {});
-		}, Error, 'Should throw error about overwriting modules.');
+		}, Error, 'Should\'nt throw error about overwriting modules. This behaivour is deprecated.');
 	});
 });
