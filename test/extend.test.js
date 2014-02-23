@@ -1,5 +1,6 @@
 var
 	assert = require('assert'),
+	async = require('async'),
 	pwf = require('../lib/pwf');
 
 describe('tests', function() {
@@ -155,8 +156,8 @@ describe('tests', function() {
 			pwf.register_class(base[i]);
 		}
 
-		pwf.register_class(ext);
-		pwf.register_class(ext2);
+		pwf.rc(ext);
+		pwf.rc(ext2);
 
 		obj_ext = pwf.create('test_ext');
 		obj_ext2 = pwf.create('test_ext2');
@@ -182,5 +183,70 @@ describe('tests', function() {
 		assert.equal(obj_ext2.test_protected(), 'foo-protected');
 	});
 
-});
 
+	it('delayed extending', function(done) {
+		var
+			fn = function(){},
+			test_dext1 = {
+				'fn':fn,
+				'name':'test_dext1',
+				'public':{
+					'test_fn':function() {
+						return 'foo';
+					}
+				}
+			},
+			test_dext2 = {
+				'fn':fn,
+				'name':'test_dext2',
+				'parents':['test_dext1']
+			},
+			test_dext3 = {
+				'fn':fn,
+				'name':'test_dext3',
+				'parents':['test_dext1', 'test_dext2']
+			},
+			test_dext4 = {
+				'fn':fn,
+				'name':'test_dext4',
+				'parents':['test_dext3']
+			},
+			jobs = [];
+
+
+		pwf.rc(test_dext4);
+
+		jobs.push(function(next) {
+			assert.strictEqual(pwf.has_class(test_dext1.name), false);
+			assert.strictEqual(pwf.has_class(test_dext2.name), false);
+			assert.strictEqual(pwf.has_classes([test_dext2.name, test_dext1.name]), false);
+
+			pwf.rc(test_dext2);
+			assert.strictEqual(pwf.has_class(test_dext2.name), false);
+
+			pwf.rc(test_dext1);
+			assert.strictEqual(pwf.has_class(test_dext1.name), true);
+			assert.strictEqual(pwf.has_class(test_dext2.name), true);
+			next();
+		});
+
+		jobs.push(function(next) {
+			pwf.rc(test_dext3);
+			pwf.wcr(['test_dext3'], function(next) {
+				next();
+			}, next);
+		});
+
+		jobs.push(function(next) {
+			pwf.wcr(['test_dext4'], function(next) {
+				next();
+			}, next);
+		});
+
+		async.parallel(jobs, function(done) {
+			return function() {
+				done();
+			};
+		}(done));
+	});
+});
