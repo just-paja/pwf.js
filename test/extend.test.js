@@ -1,7 +1,8 @@
 var
 	assert = require('assert'),
 	async = require('async'),
-	pwf = require('../lib/pwf');
+	pwf = require('../lib/pwf'),
+	extend = require('xtend');
 
 describe('tests', function() {
 	it('extending constructors with public methods', function() {
@@ -35,17 +36,29 @@ describe('tests', function() {
 			fnc = pwf.extend_constructor({
 				'fn':function() {},
 				'public':{
-					'fn_priviledged':function() {
-						return this.proto.proto_fn();
+					'fn_priviledged':function(proto) {
+						return proto('proto_fn');
 					},
-					'fn_prop':function() {
-						return this.proto.proto_prop;
+					'fn_prop':function(proto) {
+						return proto('proto_prop');
+					},
+					'fn_reverse':function(proto) {
+						return proto('proto_fn_reverse');
+					},
+					'fn_proto_inside':function(proto) {
+						return proto('proto_fn_proto');
 					}
 				},
 				'proto':{
 					'proto_prop':prop,
 					'proto_fn':function() {
 						return 'proto';
+					},
+					'proto_fn_reverse':function(obj, proto) {
+						return this.fn_prop();
+					},
+					'proto_fn_proto':function(obj, proto) {
+						return proto('proto_fn_reverse');
 					}
 				}
 			});
@@ -56,6 +69,9 @@ describe('tests', function() {
 		assert.equal(typeof obj.proto_fn, 'undefined');
 		assert.equal(obj.fn_priviledged(), 'proto');
 		assert.strictEqual(obj.fn_prop(), prop);
+		assert.equal(obj.fn_reverse(), obj.fn_prop());
+		assert.equal(obj.fn_proto_inside(), obj.fn_prop());
+
 	});
 
 
@@ -82,7 +98,7 @@ describe('tests', function() {
 		obj = pwf.create('test', args);
 		assert.strictEqual(obj.constructor, func);
 		assert.equal(typeof obj.get_args, 'function');
-		assert.strictEqual(obj.get_args(), args);
+		assert.strictEqual(obj.get_args().shift(), args);
 	});
 
 
@@ -107,8 +123,8 @@ describe('tests', function() {
 						'test_public':function() {
 							return this.fn_foo();
 						},
-						'test_protected':function() {
-							return this.proto.fn_foo_protected();
+						'test_protected':function(proto) {
+							return proto('fn_foo_protected');
 						},
 						'fn_foo':function() {
 							return 'foo';
@@ -127,16 +143,25 @@ describe('tests', function() {
 						'test_public':function() {
 							return this.fn_bar();
 						},
-						'test_protected':function() {
-							return this.proto.fn_bar_protected();
+						'test_protected':function(proto) {
+							return proto('fn_bar_protected');
 						},
 						'fn_bar':function() {
 							return 'bar';
-						}
+						},
+						'fn_var':function(proto, variable) {
+							this.storage.variable = variable;
+						},
+						'fn_var_get':function() {
+							return this.storage.variable;
+						},
+					},
+					'storage':{
+						'variable':null,
 					},
 					'proto':{
 						'fn_bar_protected':function() {
-							return 'bar-protected'
+							return 'bar-protected';
 						}
 					}
 				}
@@ -161,6 +186,7 @@ describe('tests', function() {
 
 		obj_ext = pwf.create('test_ext');
 		obj_ext2 = pwf.create('test_ext2');
+		obj_ext3 = pwf.create('test_ext2');
 
 		assert.equal(typeof obj_ext.fn_bar, 'function');
 		assert.equal(typeof obj_ext.fn_foo, 'function');
@@ -181,6 +207,14 @@ describe('tests', function() {
 		assert.equal(obj_ext2.fn_foo(), 'foo');
 		assert.equal(obj_ext2.test_public(), 'foo');
 		assert.equal(obj_ext2.test_protected(), 'foo-protected');
+
+		obj_ext.fn_var('test1');
+		obj_ext2.fn_var('test2');
+		obj_ext3.fn_var('test3');
+
+		assert.equal(obj_ext.fn_var_get(), 'test1');
+		assert.equal(obj_ext3.fn_var_get(), 'test3');
+		assert.equal(obj_ext2.fn_var_get(), 'test2');
 	});
 
 
