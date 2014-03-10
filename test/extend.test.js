@@ -120,15 +120,15 @@ describe('tests', function() {
 					'name':'test_foo',
 					'fn':function() {},
 					'public':{
-						//~ 'test_public':function() {
-							//~ return this.fn_foo();
-						//~ },
-						//~ 'test_protected':function(proto) {
-							//~ return proto('fn_foo_protected');
-						//~ },
-						//~ 'fn_foo':function() {
-							//~ return 'foo';
-						//~ }
+						'test_public':function() {
+							return this.fn_foo();
+						},
+						'test_protected':function(proto) {
+							return proto('fn_foo_protected');
+						},
+						'fn_foo':function() {
+							return 'foo';
+						}
 					},
 					'proto':{
 						'fn_foo_protected':function() {
@@ -140,21 +140,24 @@ describe('tests', function() {
 					'name':'test_bar',
 					'fn':function() {},
 					'public':{
-						//~ 'test_public':function() {
-							//~ return this.fn_bar();
-						//~ },
-						//~ 'test_protected':function(proto) {
-							//~ return proto('fn_bar_protected');
-						//~ },
+						'test_storage':function(proto) {
+							return typeof proto.storage;
+						},
+						'test_public':function() {
+							return this.fn_bar();
+						},
+						'test_protected':function(proto) {
+							return proto('fn_bar_protected');
+						},
 						'fn_bar':function() {
 							return 'bar';
 						},
-						//~ 'fn_var':function(proto, variable) {
-							//~ proto.storage.variable = variable;
-						//~ },
-						//~ 'fn_var_get':function(proto) {
-							//~ return proto.storage.variable;
-						//~ },
+						'fn_var':function(proto, variable) {
+							proto.storage.variable = variable;
+						},
+						'fn_var_get':function(proto) {
+							return proto.storage.variable;
+						},
 					},
 					'storage':{
 						'variable':null,
@@ -190,99 +193,100 @@ describe('tests', function() {
 		obj_ext2 = pwf.create('test_ext2');
 		obj_ext3 = pwf.create('test_ext2');
 
-		//~ assert.equal(typeof obj_ext.fn_bar, 'function');
-		//~ assert.equal(typeof obj_ext.fn_foo, 'function');
-		//~ assert.equal(typeof obj_ext.test_public, 'function');
-		//~ assert.equal(typeof obj_ext.test_protected, 'function');
+		assert.equal(typeof obj_ext.fn_bar, 'function');
+		assert.equal(typeof obj_ext.fn_foo, 'function');
+		assert.equal(typeof obj_ext.test_public, 'function');
+		assert.equal(typeof obj_ext.test_protected, 'function');
 
+		assert.equal(obj_ext.test_storage(), 'object');
 		assert.equal(obj_ext.fn_bar(), 'bar');
-		//~ assert.equal(obj_ext.fn_foo(), 'foo');
-		//~ assert.equal(obj_ext.test_public(), 'bar');
-		//~ assert.equal(obj_ext.test_protected(), 'bar-protected');
-//~
-		//~ assert.equal(typeof obj_ext2.fn_bar, 'function');
-		//~ assert.equal(typeof obj_ext2.fn_foo, 'function');
-		//~ assert.equal(typeof obj_ext2.test_public, 'function');
-		//~ assert.equal(typeof obj_ext2.test_protected, 'function');
-//~
-		//~ assert.equal(obj_ext2.fn_bar(), 'bar');
-		//~ assert.equal(obj_ext2.fn_foo(), 'foo');
-		//~ assert.equal(obj_ext2.test_public(), 'foo');
-		//~ assert.equal(obj_ext2.test_protected(), 'foo-protected');
-//~
-		//~ obj_ext.fn_var('test1');
-		//~ obj_ext2.fn_var('test2');
-		//~ obj_ext3.fn_var('test3');
-//~
-		//~ assert.equal(obj_ext.fn_var_get(), 'test1');
-		//~ assert.equal(obj_ext3.fn_var_get(), 'test3');
-		//~ assert.equal(obj_ext2.fn_var_get(), 'test2');
+		assert.equal(obj_ext.fn_foo(), 'foo');
+		assert.equal(obj_ext.test_public(), 'bar');
+		assert.equal(obj_ext.test_protected(), 'bar-protected');
+
+		assert.equal(typeof obj_ext2.fn_bar, 'function');
+		assert.equal(typeof obj_ext2.fn_foo, 'function');
+		assert.equal(typeof obj_ext2.test_public, 'function');
+		assert.equal(typeof obj_ext2.test_protected, 'function');
+
+		assert.equal(obj_ext2.fn_bar(), 'bar');
+		assert.equal(obj_ext2.fn_foo(), 'foo');
+		assert.equal(obj_ext2.test_public(), 'foo');
+		assert.equal(obj_ext2.test_protected(), 'foo-protected');
+
+		obj_ext.fn_var('test1');
+		obj_ext2.fn_var('test2');
+		obj_ext3.fn_var('test3');
+
+		assert.equal(obj_ext.fn_var_get(), 'test1');
+		assert.equal(obj_ext3.fn_var_get(), 'test3');
+		assert.equal(obj_ext2.fn_var_get(), 'test2');
 	});
 
-//~
-	//~ it('delayed extending', function(done) {
-		//~ var
-			//~ fn = function(){},
-			//~ test_dext1 = {
-				//~ 'fn':fn,
-				//~ 'name':'test_dext1',
-				//~ 'public':{
-					//~ 'test_fn':function() {
-						//~ return 'foo';
-					//~ }
-				//~ }
-			//~ },
-			//~ test_dext2 = {
-				//~ 'fn':fn,
-				//~ 'name':'test_dext2',
-				//~ 'parents':['test_dext1']
-			//~ },
-			//~ test_dext3 = {
-				//~ 'fn':fn,
-				//~ 'name':'test_dext3',
-				//~ 'parents':['test_dext1', 'test_dext2']
-			//~ },
-			//~ test_dext4 = {
-				//~ 'fn':fn,
-				//~ 'name':'test_dext4',
-				//~ 'parents':['test_dext3']
-			//~ },
-			//~ jobs = [];
-//~
-//~
-		//~ pwf.rc(test_dext4);
-//~
-		//~ jobs.push(function(next) {
-			//~ assert.strictEqual(pwf.has_class(test_dext1.name), false);
-			//~ assert.strictEqual(pwf.has_class(test_dext2.name), false);
-			//~ assert.strictEqual(pwf.has_classes([test_dext2.name, test_dext1.name]), false);
-//~
-			//~ pwf.rc(test_dext2);
-			//~ assert.strictEqual(pwf.has_class(test_dext2.name), false);
-//~
-			//~ pwf.rc(test_dext1);
-			//~ assert.strictEqual(pwf.has_class(test_dext1.name), true);
-			//~ assert.strictEqual(pwf.has_class(test_dext2.name), true);
-			//~ next();
-		//~ });
-//~
-		//~ jobs.push(function(next) {
-			//~ pwf.rc(test_dext3);
-			//~ pwf.wcr(['test_dext3'], function(next) {
-				//~ next();
-			//~ }, next);
-		//~ });
-//~
-		//~ jobs.push(function(next) {
-			//~ pwf.wcr(['test_dext4'], function(next) {
-				//~ next();
-			//~ }, next);
-		//~ });
-//~
-		//~ async.parallel(jobs, function(done) {
-			//~ return function() {
-				//~ done();
-			//~ };
-		//~ }(done));
-	//~ });
+
+	it('delayed extending', function(done) {
+		var
+			fn = function(){},
+			test_dext1 = {
+				'fn':fn,
+				'name':'test_dext1',
+				'public':{
+					'test_fn':function() {
+						return 'foo';
+					}
+				}
+			},
+			test_dext2 = {
+				'fn':fn,
+				'name':'test_dext2',
+				'parents':['test_dext1']
+			},
+			test_dext3 = {
+				'fn':fn,
+				'name':'test_dext3',
+				'parents':['test_dext1', 'test_dext2']
+			},
+			test_dext4 = {
+				'fn':fn,
+				'name':'test_dext4',
+				'parents':['test_dext3']
+			},
+			jobs = [];
+
+
+		pwf.rc(test_dext4);
+
+		jobs.push(function(next) {
+			assert.strictEqual(pwf.has_class(test_dext1.name), false);
+			assert.strictEqual(pwf.has_class(test_dext2.name), false);
+			assert.strictEqual(pwf.has_classes([test_dext2.name, test_dext1.name]), false);
+
+			pwf.rc(test_dext2);
+			assert.strictEqual(pwf.has_class(test_dext2.name), false);
+
+			pwf.rc(test_dext1);
+			assert.strictEqual(pwf.has_class(test_dext1.name), true);
+			assert.strictEqual(pwf.has_class(test_dext2.name), true);
+			next();
+		});
+
+		jobs.push(function(next) {
+			pwf.rc(test_dext3);
+			pwf.wcr(['test_dext3'], function(next) {
+				next();
+			}, next);
+		});
+
+		jobs.push(function(next) {
+			pwf.wcr(['test_dext4'], function(next) {
+				next();
+			}, next);
+		});
+
+		async.parallel(jobs, function(done) {
+			return function() {
+				done();
+			};
+		}(done));
+	});
 });
