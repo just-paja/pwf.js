@@ -115,6 +115,7 @@ describe('tests', function() {
 		var
 			obj_ext,
 			obj_ext2,
+			obj_ext3,
 			base = [
 				{
 					'name':'test_foo',
