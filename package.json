@@ -10,7 +10,7 @@
 	"scripts":{
 		"test":"echo Running tests... && mocha --globals testRule"
 	},
-	"main":"lib/pwf.js",
+	"main":"lib/include.js",
 	"repository":{
 		"type":"git",
 		"url":"https://github.com/just-paja/pwf.js"

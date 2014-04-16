@@ -1,7 +1,7 @@
 {
 	"name":"pwf.js",
 	"version":"1.0.4",
-	"main":"lib/pwf.js",
+	"main":"lib/include.js",
 	"ignore":[
 		"test",
 		"LICENSE",
