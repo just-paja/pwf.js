@@ -4,8 +4,26 @@ var
 	pwf = require('../lib/pwf'),
 	extend = require('xtend');
 
-describe('tests', function() {
-	it('extending constructors with public methods', function() {
+describe('extend test: ', function() {
+	it('tests deepExtend', function() {
+		var
+			list = ['dont'],
+			a = {'z':'keep'},
+			b = {'b':'foo', 'd':'yellow'},
+			c = {'a':list, 'b':'bar', 'c':1},
+			merge = Object.deepExtend(a, b, c);
+
+		assert.equal(merge['a'].join(''), list.join(''));
+		assert.equal(merge['b'], 'bar');
+		assert.equal(merge['c'], 1);
+		assert.equal(merge['d'], 'yellow');
+		assert.equal(merge['z'], 'keep');
+
+		list.push('zap');
+		assert.equal(merge['a'].length, 1);
+	});
+
+	it('tests extending constructors with public methods', function() {
 		var
 			obj,
 			fnc = pwf.extend_constructor({
@@ -28,7 +46,7 @@ describe('tests', function() {
 		assert.equal(obj.test_prop, 'test');
 	});
 
-	it('extending constructors with protected methods', function() {
+	it('tests extending constructors with protected methods', function() {
 		var
 			obj,
 			prop = {},
@@ -72,8 +90,7 @@ describe('tests', function() {
 		assert.equal(obj.fn_proto_inside(), obj.fn_prop());
 	});
 
-
-	it('registering classes', function() {
+	it('tests registering classes', function() {
 		var
 			obj,
 			args = {'msg':'testing-attrs'},
@@ -101,8 +118,7 @@ describe('tests', function() {
 		assert.strictEqual(obj.get_args().shift(), args);
 	});
 
-
-	it('extending simple objects', function() {
+	it('tests extending simple objects', function() {
 		var res = pwf.extend_obj({'foo':'1', 'bar':'2'}, {'jeb':'3', 'bar':5});
 
 		assert.strictEqual(res.foo, '1');
@@ -110,8 +126,7 @@ describe('tests', function() {
 		assert.strictEqual(res.bar, 5);
 	});
 
-
-	it('extending classes', function() {
+	it('tests extending classes', function() {
 		var
 			obj_ext,
 			obj_ext2,
@@ -224,8 +239,7 @@ describe('tests', function() {
 		assert.equal(obj_ext2.fn_var_get(), 'test2');
 	});
 
-
-	it('delayed extending', function(done) {
+	it('tests delayed extending', function(done) {
 		var
 			fn = function(){},
 			test_dext1 = {
