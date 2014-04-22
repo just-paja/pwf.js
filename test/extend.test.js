@@ -5,13 +5,13 @@ var
 	extend = require('xtend');
 
 describe('extend test: ', function() {
-	it('tests deepExtend', function() {
+	it('tests extend', function() {
 		var
 			list = ['dont'],
 			a = {'z':'keep'},
 			b = {'b':'foo', 'd':'yellow'},
 			c = {'a':list, 'b':'bar', 'c':1},
-			merge = Object.deepExtend(a, b, c);
+			merge = Object.merge(true, a, b, c);
 
 		assert.equal(merge['a'].join(''), list.join(''));
 		assert.equal(merge['b'], 'bar');
@@ -119,7 +119,7 @@ describe('extend test: ', function() {
 	});
 
 	it('tests extending simple objects', function() {
-		var res = pwf.extend_obj({'foo':'1', 'bar':'2'}, {'jeb':'3', 'bar':5});
+		var res = Object.merge(true, {'foo':'1', 'bar':'2'}, {'jeb':'3', 'bar':5});
 
 		assert.strictEqual(res.foo, '1');
 		assert.strictEqual(res.jeb, '3');
