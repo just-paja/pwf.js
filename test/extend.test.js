@@ -8,9 +8,9 @@ describe('extend test: ', function() {
 	it('tests extend', function() {
 		var
 			list = ['dont'],
-			a = {'z':'keep'},
+			a = {'z':'keep', 'e':{'f':{'upper':'base'}}},
 			b = {'b':'foo', 'd':'yellow'},
-			c = {'a':list, 'b':'bar', 'c':1},
+			c = {'a':list, 'b':'bar', 'c':1, 'e':{'f':{'lower':'written'}}},
 			merge = Object.merge(true, a, b, c);
 
 		assert.equal(merge['a'].join(''), list.join(''));
@@ -21,6 +21,8 @@ describe('extend test: ', function() {
 
 		list.push('zap');
 		assert.equal(merge['a'].length, 1);
+		assert.equal(merge['e']['f'].upper, 'base');
+		assert.equal(merge['e']['f'].lower, 'written');
 	});
 
 	it('tests extending constructors with public methods', function() {
