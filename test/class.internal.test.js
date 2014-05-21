@@ -6,7 +6,7 @@ var
 
 describe('tests', function() {
 
-	it ('tests object internal methods', function() {
+	it('tests object internal methods', function() {
 		var obj;
 
 		pwf.rc('test.internal', {
@@ -32,5 +32,19 @@ describe('tests', function() {
 
 		assert.equal(obj.exists('test'), true);
 		assert.equal(obj.exists('test2'), false);
+	});
+
+
+	it('tests object parent saving', function() {
+		var obj;
+
+		pwf.rc('test.parent.a', {});
+		pwf.rc('test.parent.b', {'parents':['test.parent.a']});
+		pwf.rc('test.parent.c', {'parents':['test.parent.b']});
+		pwf.rc('test.parent.d', {'parents':['test.parent.c']});
+
+		obj = pwf.create('test.parent.d');
+
+		assert.equal(obj.meta.parents.length, 3);
 	});
 });
