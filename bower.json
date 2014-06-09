@@ -1,6 +1,5 @@
 {
 	"name":"pwf.js",
-	"version":"1.0.4",
 	"main":"lib/include.js",
 	"ignore":[
 		"test",
