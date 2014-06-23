@@ -3,7 +3,11 @@
 Javascript container for writing modules and loading them asynchronously based on simple dependency system.
 
 
-## Example of use
+## Examples
+
+### Modules
+
+Modules are singleton objects capable of async waiting for dependencies.
 
 ```javascript
 pwf.register('example', function() {
@@ -38,7 +42,70 @@ pwf.register('dep', function() {
 });
 ```
 
+### Classes
+
+Classes are object that support inheritance from multiple parents and a sort of private variables and methods. Class waits for its' parents to become accessible.
+
+```javascript
+pwf.rc('class_name', {
+
+	// This class will be extended by methods of these classes
+	'parents':['ancestor1', 'ancestor2'],
+	
+	// All members of 'public' will be publicly visible. Methods will be passed 
+	// proto-caller object as first argument
+	'public':{
+		'public_method':function(proto, first_argument) {
+			return proto('protected_method', first_argument);
+		}
+	},
+	
+	// All members of 'proto' will be visible only from inside. They are called 
+	// using proto-caller. Methods will be passed proto-caller object as 
+	// first argument
+	'proto':{
+		'protected_method':function(proto, first_argument) {
+			return {
+				'arg':first_argument, 
+				'from_storage':proto.storage.var_in_storage
+			};
+		}
+	},
+	
+	// All members of 'static' will be public, but accessible only from class 
+	// definition. Try obj.meta.static or pwf.get_class('class_name')
+	'static':{
+		'some_value':42
+	},
+	
+	// All members of 'storage' are accessible via proto-caller only.
+	'storage':{
+		'var_in_storage':'saved-in-storage'
+	},
+	
+	// This will be appended to init chain. Inits of all ancestors are called 
+	// in order after creating object via pwf.create.
+	// All arguments from constructor are passed.
+	'init':function(proto, arg1) {
+		console.log(arg1);
+	},
+});
+
+var obj = pwf.create('class_name', 'value-for-arg1');
+console.log(obj.public_method('first-arg'));
+```
+
+
 ## Methods
+
+
+### pwf#rc(name, def)
+Register class inside pwf container. See example above.
+
+
+### pwf#merge(deep, obj1, obj2, obj3, ..)
+Merge objects into a new one. If deep is passed as true, all subobjects will be cloned.
+
 
 ### pwf#register(name, module, create_instance=true)
 Register a module inside pwf container
@@ -150,3 +217,16 @@ Check if this module has been initialized
 ### pwf#modules_initialized(module)
 Check if these modules have been initialized
 
+
+### pwf#list_scope(str)
+Get list of names of classes in passed scope
+
+
+### pwf#has_class(str)
+Is class ready for use?
+
+
+```javascript
+	pwf.list_scope('el.');
+	// returns [ ... ]
+```
