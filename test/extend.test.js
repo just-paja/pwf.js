@@ -5,7 +5,7 @@ var
 
 require('../lib/pwf');
 
-describe('extend test: ', function() {
+describe('suite', function() {
 	it('tests extend', function() {
 		var
 			list = ['dont'],
