@@ -12,7 +12,7 @@ describe('extend test: ', function() {
 			a = {'z':'keep', 'e':{'f':{'upper':'base'}}},
 			b = {'b':'foo', 'd':'yellow'},
 			c = {'a':list, 'b':'bar', 'c':1, 'e':{'f':{'lower':'written'}}},
-			merge = Object.merge(true, a, b, c);
+			merge = pwf.merge(true, a, b, c);
 
 		assert.equal(merge['a'].join(''), list.join(''));
 		assert.equal(merge['b'], 'bar');
@@ -122,7 +122,7 @@ describe('extend test: ', function() {
 	});
 
 	it('tests extending simple objects', function() {
-		var res = Object.merge(true, {'foo':'1', 'bar':'2'}, {'jeb':'3', 'bar':5});
+		var res = pwf.merge(true, {'foo':'1', 'bar':'2'}, {'jeb':'3', 'bar':5});
 
 		assert.strictEqual(res.foo, '1');
 		assert.strictEqual(res.jeb, '3');
