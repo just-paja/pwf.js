@@ -1,8 +1,9 @@
 var
 	assert = require('assert'),
 	async = require('async'),
-	pwf = require('../lib/pwf'),
 	extend = require('xtend');
+
+require('../lib/pwf');
 
 describe('extend test: ', function() {
 	it('tests extend', function() {

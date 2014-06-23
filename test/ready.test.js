@@ -1,6 +1,6 @@
-var
-	assert = require('assert'),
-	pwf    = require('../lib/pwf');
+var assert = require('assert');
+
+require('../lib/pwf');
 
 describe('register', function() {
 	it('should test module status checking', function() {
