@@ -48,4 +48,32 @@ describe('tests', function() {
 
 		assert.equal(obj.meta.parents.length, 3);
 	});
+
+	it('tests multiple same inits', function() {
+		var
+			obj,
+			init = function(proto) {
+				proto.storage.value ++;
+			};
+
+		pwf.rc('test.init.a', {
+			'init':init,
+			'storage':{
+				'value':0
+			},
+
+			'public':{
+				'get_value':function(proto) {
+					return proto.storage.value;
+				}
+			}
+		});
+
+		pwf.rc('test.init.b', {'parents':['test.init.a']});
+		pwf.rc('test.init.c', {'parents':['test.init.a', 'test.init.b'], 'init':init});
+
+		obj = pwf.create('test.init.c');
+
+		assert.equal(obj.get_value(), 1);
+	});
 });
