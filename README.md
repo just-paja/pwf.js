@@ -230,3 +230,80 @@ Is class ready for use?
 	pwf.list_scope('el.');
 	// returns [ ... ]
 ```
+
+
+# Objects
+
+## container
+Object designed to store and serve data from object storage. All public data are stored in ```storage.opts```.
+
+### Container init
+Init accepts arg_data as first argument. It is passed to [get_attrs](#get_attrs)
+
+### Public methods
+
+#### get(name)
+Returns value stored inside object by ```name```
+
+#### set(name, value)
+Saves ```value``` under ```name``` inside object
+
+#### update(arg_data)
+Merge stored data with plain object ```arg_data```.
+
+#### get_attrs
+Returns all data stored in object.
+
+
+## domel
+Object designed to connect DOM and data operations. It uses jQuery.
+
+### Attributes
+
+#### tag
+Tagname for created domel tag in DOM.
+
+##### Default: ```'div'```
+
+
+#### parent
+Parent to append to during init
+
+##### Default: ```null```
+
+
+### Domel init
+Inherits from [container](#container). After object creation jQuery object is created and saved ```storage.el```, [tag attr][#tag] is used as tagname. All parent classes of object instance are added as CSS class and if [parent attribute](#parent) is passed, [append](#appendparent) is called.
+
+### Public methods
+
+#### append(parent)
+Append object to ```parent```. Accepts jQuery reference object as first argument. Calls protected methods ```el_attached``` and ```el_bind``` after appending. These methods are undefined by default.
+
+#### remove
+Remove object from DOM. Calls protected methods ```el_removed``` and ```el_unbind``` after removing. These methods are undefined by default.
+
+#### add_el(name, el)
+Reference ```el``` as ```name``` to ```storage.el```.
+
+#### divs(list, prefix)
+Create and reference divs from ```list``` using [create_divs](https://github.com/just-paja/pwf-jquery-compat#create_divs) on ```storage.el```
+
+#### get_el(name)
+Get element referenced to ```storage.el``` named ```name```
+
+
+## caller
+Object designed to simplify calling callbacks. Inherits from [container](#container).
+
+### Public methods
+
+#### respond(name, args)
+If ```name``` is string, gets ```name``` attr by [containers' get](#getname) method. If ```name``` is function, it is used directly. If function is resolved, it is called in context of this object instance and arguments ```args``` are passed to it.
+
+Example
+```
+object.respond('on_ready', [null, 'success']);
+```
+
+
