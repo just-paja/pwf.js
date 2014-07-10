@@ -104,14 +104,14 @@ describe('suite', function() {
 			};
 
 		assert.throws(function() { pwf.rc(null); });
-		assert.throws(function() { pwf.get_constructor('asdf'); });
 		assert.throws(function() { pwf.create('asdf'); });
 
 		pwf.rc({'name':'test', 'fn':func});
 		assert.throws(function() { pwf.rc({'name':'test', 'fn':func}); });
 
-		assert.strictEqual(typeof pwf.get_constructor('test'), 'function');
-		assert.strictEqual(pwf.get_constructor('test'), func);
+		assert.strictEqual(pwf.get_class('asdf'), null);
+		assert.strictEqual(typeof pwf.get_class('test').fn, 'function');
+		assert.strictEqual(pwf.get_class('test').fn, func);
 
 		obj = pwf.create('test', args);
 
