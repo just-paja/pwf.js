@@ -1,6 +1,6 @@
 {
 	"name":"pwf.js",
-	"version":"1.5.2-rc2",
+	"version":"1.5.2",
 	"description":"Container for writing frontend modules",
 	"dependencies":{
 	},
