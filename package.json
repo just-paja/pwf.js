@@ -1,6 +1,6 @@
 {
 	"name":"pwf.js",
-	"version":"1.5.1",
+	"version":"1.5.2-rc1",
 	"description":"Container for writing frontend modules",
 	"dependencies":{
 	},
@@ -19,10 +19,10 @@
 	"license":"GPLv3",
 
 	"files":[
-		"lib/pwf",
-		"lib/models/container",
-		"lib/models/domel",
-		"lib/models/caller",
-		"lib/models/el/abs"
+		"lib/pwf.js",
+		"lib/models/container.js",
+		"lib/models/domel.js",
+		"lib/models/caller.js",
+		"lib/models/el/abs.js"
 	]
 }
