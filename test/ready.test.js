@@ -11,5 +11,6 @@ describe('register', function() {
 
 		pwf.register('modt', function() { this.is_ready = function() { return true; }; });
 		assert.strictEqual(pwf.status('modt'), true, 'Should be true, the module is ready.');
+		assert.strictEqual(pwf.mr(['modt']), true);
 	});
 });
