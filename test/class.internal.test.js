@@ -1,11 +1,35 @@
 var
 	assert = require('assert'),
-	async = require('async'),
-	extend = require('xtend');
+	async  = require('async');
 
 require('../lib/pwf');
 
-describe('tests', function() {
+describe('internal class module', function() {
+
+	it('tests listing class scope', function() {
+		pwf.rc('test.scope.a', {});
+		pwf.rc('test.scope.b', {});
+		pwf.rc('test.scope.a.c', {});
+		pwf.rc('test.scope.a.d', {});
+		pwf.rc('test.scope.b.e', {});
+
+		// Test basic scope listing
+		assert.equal(pwf.list_scope('test.scope').length, 0);
+		assert.equal(pwf.list_scope('test.scope.').length, 5);
+		assert.equal(pwf.list_scope('test.scope.a.').length, 2);
+
+		// Test if acting as scope works (includes name and all subnames)
+		assert.equal(pwf.list_scope('test.scope.a', true).length, 3);
+		assert.equal(pwf.list_scope('test.scope.a', true).indexOf('test.scope.a'), 0);
+		assert.equal(pwf.list_scope('test.scope.a', true).indexOf('test.scope.a.c'), 1);
+		assert.equal(pwf.list_scope('test.scope.a', true).indexOf('test.scope.a.d'), 2);
+
+		assert.equal(pwf.list_scope('test.scope.b.').length, 1);
+		assert.equal(pwf.list_scope('test.scope.b', true).length, 2);
+		assert.equal(pwf.list_scope('test.scope.b', true).indexOf('test.scope.b'), 0);
+		assert.equal(pwf.list_scope('test.scope.b', true).indexOf('test.scope.b.e'), 1);
+	});
+
 
 	it('tests object internal methods', function() {
 		var obj;
@@ -48,6 +72,7 @@ describe('tests', function() {
 
 		assert.equal(obj.meta.parents.length, 3);
 	});
+
 
 	it('tests multiple same inits', function() {
 		var
