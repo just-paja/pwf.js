@@ -202,7 +202,7 @@ describe('suite', function() {
 		base[1].public.fn_bar.d = 'd';
 
 		for (var i = 0; i < base.length; i++) {
-			pwf.register_class(base[i]);
+			pwf.rc(base[i]);
 		}
 
 		pwf.rc(ext);
