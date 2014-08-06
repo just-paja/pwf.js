@@ -5,8 +5,8 @@ var
 
 require('../lib/pwf');
 
-describe('tests', function() {
-	it('calling all inherited init functions', function() {
+describe('class init module', function() {
+	it('tests calling all inherited init functions', function() {
 		var
 			obj,
 			fn1 = function(proto) { proto.storage.pass.push(1) },
