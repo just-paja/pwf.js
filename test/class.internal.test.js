@@ -101,4 +101,19 @@ describe('internal class module', function() {
 
 		assert.equal(obj.get_value(), 1);
 	});
+
+
+	it('tests waiting for static modules', function() {
+		var c = {'uses':['mod_a', 'mod_b']};
+
+		pwf.rc('test.uses', c);
+
+		assert.equal(pwf.has_class('test.uses'), false);
+
+		pwf.register('mod_a', function(){});
+		assert.equal(pwf.has_class('test.uses'), false);
+
+		pwf.register('mod_b', function(){});
+		assert.equal(pwf.has_class('test.uses'), true);
+	});
 });
