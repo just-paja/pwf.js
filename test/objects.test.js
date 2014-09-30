@@ -4,7 +4,6 @@ var
 
 require('../lib/pwf');
 require('../lib/models/container');
-require('../lib/models/domel');
 require('../lib/models/caller');
 
 describe('object module', function() {
