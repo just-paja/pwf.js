@@ -5,7 +5,7 @@ var
 
 require('../lib/pwf');
 
-describe('suite', function() {
+describe('extend', function() {
 	it('tests extend', function() {
 		var
 			list = ['dont'],
@@ -118,7 +118,9 @@ describe('suite', function() {
 		assert.strictEqual(obj.meta.cname, 'test');
 		assert.strictEqual(obj.meta.constructor, func);
 		assert.strictEqual(typeof obj.get_args, 'function');
-		assert.strictEqual(obj.get_args().shift(), args);
+
+		// Behaviour dropped
+		//~ assert.strictEqual(obj.get_args().shift(), args);
 	});
 
 	it('tests extending simple objects', function() {
