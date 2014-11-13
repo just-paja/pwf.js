@@ -5,8 +5,8 @@ var
 
 require('../lib/pwf');
 
-describe('extend', function() {
-	it('tests extend', function() {
+describe('class extending', function() {
+	it('merge method', function() {
 		var
 			list = ['dont'],
 			a = {'z':'keep', 'e':{'f':{'upper':'base'}}},
@@ -26,10 +26,10 @@ describe('extend', function() {
 		assert.equal(merge['e']['f'].lower, 'written');
 	});
 
-	it('tests extending constructors with public methods', function() {
+	it('constructor extending, public methods', function() {
 		var
 			obj,
-			fnc = pwf.extend_constructor({
+			fnc = pwf.internal().extend_constructor({
 				'fn':function() {},
 				'public':{
 					'test_prop':'test',
@@ -49,11 +49,11 @@ describe('extend', function() {
 		assert.equal(obj.test_prop, 'test');
 	});
 
-	it('tests extending constructors with protected methods', function() {
+	it('constructor extending, protected methods', function() {
 		var
 			obj,
 			prop = {},
-			fnc = pwf.extend_constructor({
+			fnc = pwf.internal().extend_constructor({
 				'fn':function() {},
 				'public':{
 					'fn_priviledged':function(proto) {
@@ -93,7 +93,7 @@ describe('extend', function() {
 		assert.equal(obj.fn_proto_inside(), obj.fn_prop());
 	});
 
-	it('tests registering classes', function() {
+	it('class registering', function() {
 		var
 			obj,
 			args = {'msg':'testing-attrs'},
@@ -103,11 +103,11 @@ describe('extend', function() {
 				};
 			};
 
-		assert.throws(function() { pwf.rc(null); });
+		assert.throws(function() { pwf.reg_class(null); });
 		assert.throws(function() { pwf.create('asdf'); });
 
-		pwf.rc({'name':'test', 'fn':func});
-		assert.throws(function() { pwf.rc({'name':'test', 'fn':func}); });
+		pwf.reg_class({'name':'test', 'fn':func});
+		assert.throws(function() { pwf.reg_class({'name':'test', 'fn':func}); });
 
 		assert.strictEqual(pwf.get_class('asdf'), null);
 		assert.strictEqual(typeof pwf.get_class('test').fn, 'function');
@@ -123,7 +123,7 @@ describe('extend', function() {
 		//~ assert.strictEqual(obj.get_args().shift(), args);
 	});
 
-	it('tests extending simple objects', function() {
+	it('merge method, simple objects', function() {
 		var res = pwf.merge(true, {'foo':'1', 'bar':'2'}, {'jeb':'3', 'bar':5});
 
 		assert.strictEqual(res.foo, '1');
@@ -131,7 +131,7 @@ describe('extend', function() {
 		assert.strictEqual(res.bar, 5);
 	});
 
-	it('tests extending classes', function() {
+	it('class extending, complex', function() {
 		var
 			obj_ext,
 			obj_ext2,
@@ -204,11 +204,11 @@ describe('extend', function() {
 		base[1].public.fn_bar.d = 'd';
 
 		for (var i = 0; i < base.length; i++) {
-			pwf.rc(base[i]);
+			pwf.reg_class(base[i]);
 		}
 
-		pwf.rc(ext);
-		pwf.rc(ext2);
+		pwf.reg_class(ext);
+		pwf.reg_class(ext2);
 
 		obj_ext = pwf.create('test_ext');
 		obj_ext2 = pwf.create('test_ext2');
@@ -244,7 +244,7 @@ describe('extend', function() {
 		assert.equal(obj_ext2.fn_var_get(), 'test2');
 	});
 
-	it('tests delayed extending', function(done) {
+	it('class deps, waiting', function(done) {
 		var
 			fn = function(){},
 			test_dext1 = {
@@ -274,33 +274,33 @@ describe('extend', function() {
 			jobs = [];
 
 
-		pwf.rc(test_dext4);
+		pwf.reg_class(test_dext4);
 
 		jobs.push(function(next) {
-			assert.strictEqual(pwf.has_class(test_dext1.name), false);
-			assert.strictEqual(pwf.has_class(test_dext2.name), false);
-			assert.strictEqual(pwf.has_classes([test_dext2.name, test_dext1.name]), false);
+			assert.strictEqual(pwf.has('class', test_dext1.name), false);
+			assert.strictEqual(pwf.has('class', test_dext2.name), false);
+			assert.strictEqual(pwf.has('class', [test_dext2.name, test_dext1.name]), false);
 
-			pwf.rc(test_dext2);
-			assert.strictEqual(pwf.has_class(test_dext2.name), false);
+			pwf.reg_class(test_dext2);
+			assert.strictEqual(pwf.has('class', test_dext2.name), false);
 
-			pwf.rc(test_dext1);
-			assert.strictEqual(pwf.has_class(test_dext1.name), true);
-			assert.strictEqual(pwf.has_class(test_dext2.name), true);
+			pwf.reg_class(test_dext1);
+			assert.strictEqual(pwf.has('class', test_dext1.name), true);
+			assert.strictEqual(pwf.has('class', test_dext2.name), true);
 			next();
 		});
 
 		jobs.push(function(next) {
-			pwf.rc(test_dext3);
-			pwf.wcr(['test_dext3'], function(next) {
+			pwf.reg_class(test_dext3);
+			pwf.wait_for('class', ['test_dext3'], function() {
 				next();
-			}, next);
+			});
 		});
 
 		jobs.push(function(next) {
-			pwf.wcr(['test_dext4'], function(next) {
+			pwf.wait_for('class', ['test_dext4'], function() {
 				next();
-			}, next);
+			});
 		});
 
 		async.parallel(jobs, function(done) {

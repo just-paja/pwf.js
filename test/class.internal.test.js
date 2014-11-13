@@ -4,14 +4,14 @@ var
 
 require('../lib/pwf');
 
-describe('internal class module', function() {
+describe('class internals', function() {
 
-	it('tests listing class scope', function() {
-		pwf.rc('test.scope.a', {});
-		pwf.rc('test.scope.b', {});
-		pwf.rc('test.scope.a.c', {});
-		pwf.rc('test.scope.a.d', {});
-		pwf.rc('test.scope.b.e', {});
+	it('listing class scope', function() {
+		pwf.reg_class('test.scope.a', {});
+		pwf.reg_class('test.scope.b', {});
+		pwf.reg_class('test.scope.a.c', {});
+		pwf.reg_class('test.scope.a.d', {});
+		pwf.reg_class('test.scope.b.e', {});
 
 		// Test basic scope listing
 		assert.equal(pwf.list_scope('test.scope').length, 0);
@@ -31,10 +31,10 @@ describe('internal class module', function() {
 	});
 
 
-	it('tests object internal methods', function() {
+	it('class instance internal methods', function() {
 		var obj;
 
-		pwf.rc('test.internal', {
+		pwf.reg_class('test.internal', {
 			'public':{
 				'type':function(proto, name) {
 					return proto.type(name);
@@ -60,13 +60,13 @@ describe('internal class module', function() {
 	});
 
 
-	it('tests object parent saving', function() {
+	it('class instance parents', function() {
 		var obj;
 
-		pwf.rc('test.parent.a', {});
-		pwf.rc('test.parent.b', {'parents':['test.parent.a']});
-		pwf.rc('test.parent.c', {'parents':['test.parent.b']});
-		pwf.rc('test.parent.d', {'parents':['test.parent.c']});
+		pwf.reg_class('test.parent.a', {});
+		pwf.reg_class('test.parent.b', {'parents':['test.parent.a']});
+		pwf.reg_class('test.parent.c', {'parents':['test.parent.b']});
+		pwf.reg_class('test.parent.d', {'parents':['test.parent.c']});
 
 		obj = pwf.create('test.parent.d');
 
@@ -74,14 +74,14 @@ describe('internal class module', function() {
 	});
 
 
-	it('tests multiple same inits', function() {
+	it('class instance multiple inits', function() {
 		var
 			obj,
 			init = function(proto) {
 				proto.storage.value ++;
 			};
 
-		pwf.rc('test.init.a', {
+		pwf.reg_class('test.init.a', {
 			'init':init,
 			'storage':{
 				'value':0
@@ -94,8 +94,8 @@ describe('internal class module', function() {
 			}
 		});
 
-		pwf.rc('test.init.b', {'parents':['test.init.a']});
-		pwf.rc('test.init.c', {'parents':['test.init.a', 'test.init.b'], 'init':init});
+		pwf.reg_class('test.init.b', {'parents':['test.init.a']});
+		pwf.reg_class('test.init.c', {'parents':['test.init.a', 'test.init.b'], 'init':init});
 
 		obj = pwf.create('test.init.c');
 
@@ -103,17 +103,17 @@ describe('internal class module', function() {
 	});
 
 
-	it('tests waiting for static modules', function() {
+	it('class dependencies', function() {
 		var c = {'uses':['mod_a', 'mod_b']};
 
-		pwf.rc('test.uses', c);
+		pwf.reg_class('test.uses', c);
 
-		assert.equal(pwf.has_class('test.uses'), false);
+		assert.equal(pwf.has('class', 'test.uses'), false);
 
-		pwf.register('mod_a', function(){});
-		assert.equal(pwf.has_class('test.uses'), false);
+		pwf.reg_module('mod_a', function(){});
+		assert.equal(pwf.has('class', 'test.uses'), false);
 
-		pwf.register('mod_b', function(){});
-		assert.equal(pwf.has_class('test.uses'), true);
+		pwf.reg_module('mod_b', function(){});
+		assert.equal(pwf.has('class', 'test.uses'), true);
 	});
 });
