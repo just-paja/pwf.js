@@ -12,13 +12,30 @@ describe('class extending', function() {
 			a = {'z':'keep', 'e':{'f':{'upper':'base'}}},
 			b = {'b':'foo', 'd':'yellow'},
 			c = {'a':list, 'b':'bar', 'c':1, 'e':{'f':{'lower':'written'}}},
-			merge = pwf.merge(true, a, b, c);
+			merge = pwf.merge(true, a, b, c),
+
+			bools = {
+				"bool1":true,
+				"bool2":false,
+			},
+
+			bools_over = {
+				"bool2":false,
+				"bool3":true,
+			};
 
 		assert.equal(merge['a'].join(''), list.join(''));
 		assert.equal(merge['b'], 'bar');
 		assert.equal(merge['c'], 1);
 		assert.equal(merge['d'], 'yellow');
 		assert.equal(merge['z'], 'keep');
+
+
+		var d = pwf.merge(true, bools, bools_over);
+
+		assert.equal(d.bool1, true);
+		assert.equal(d.bool2, false);
+		assert.equal(d.bool3, true);
 
 		list.push('zap');
 		assert.equal(merge['a'].length, 1);
