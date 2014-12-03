@@ -1,5 +1,13 @@
 {
 	"name":"pwf.js",
+
+	"main":[
+		"lib/pwf.js",
+		"lib/models/container.js",
+		"lib/models/caller.js",
+		"lib/models/domel.js"
+	],
+
 	"ignore":[
 		"test",
 		"LICENSE",
