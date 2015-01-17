@@ -1,6 +1,4 @@
-var
-	assert = require('assert'),
-	extend = require('xtend');
+var assert = require('assert');
 
 require('../lib/pwf');
 require('../lib/models/container');

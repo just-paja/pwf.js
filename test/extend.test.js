@@ -1,7 +1,6 @@
 var
 	assert = require('assert'),
-	async = require('async'),
-	extend = require('xtend');
+	async = require('async');
 
 require('../lib/pwf');
 
