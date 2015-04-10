@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/just-paja/pwf.js.png)](https://travis-ci.org/just-paja/pwf.js)
+
 # pwf.js
 
 Javascript container for writing modules and loading them asynchronously based on simple dependency system.
@@ -14,8 +16,8 @@ pwf.register('example', function() {
 	this.is_ready = function(){
 		return pwf.wi(['dep']);
 	};
-	
-	
+
+
 	this.init = function() {
 		alert('example initialized');
 	};
@@ -24,17 +26,17 @@ pwf.register('example', function() {
 
 pwf.register('dep', function() {
 	var some_local_variable = null;
-	
+
 	this.is_ready = function() {
 		return 1 + 1 == 2;
 	};
 
-	
+
 	var some_local_method = function() {
 		return some_local_variable;
 	};
-	
-	
+
+
 	this.some_priviledged_method = function() {
 		// Returns instance of dep module registered in pwf
 		return this;
@@ -51,39 +53,39 @@ pwf.rc('class_name', {
 
 	// This class will be extended by methods of these classes
 	'parents':['ancestor1', 'ancestor2'],
-	
-	// All members of 'public' will be publicly visible. Methods will be passed 
+
+	// All members of 'public' will be publicly visible. Methods will be passed
 	// proto-caller object as first argument
 	'public':{
 		'public_method':function(proto, first_argument) {
 			return proto('protected_method', first_argument);
 		}
 	},
-	
-	// All members of 'proto' will be visible only from inside. They are called 
-	// using proto-caller. Methods will be passed proto-caller object as 
+
+	// All members of 'proto' will be visible only from inside. They are called
+	// using proto-caller. Methods will be passed proto-caller object as
 	// first argument
 	'proto':{
 		'protected_method':function(proto, first_argument) {
 			return {
-				'arg':first_argument, 
+				'arg':first_argument,
 				'from_storage':proto.storage.var_in_storage
 			};
 		}
 	},
-	
-	// All members of 'static' will be public, but accessible only from class 
+
+	// All members of 'static' will be public, but accessible only from class
 	// definition. Try obj.meta.static or pwf.get_class('class_name')
 	'static':{
 		'some_value':42
 	},
-	
+
 	// All members of 'storage' are accessible via proto-caller only.
 	'storage':{
 		'var_in_storage':'saved-in-storage'
 	},
-	
-	// This will be appended to init chain. Inits of all ancestors are called 
+
+	// This will be appended to init chain. Inits of all ancestors are called
 	// in order after creating object via pwf.create.
 	// All arguments from constructor are passed.
 	'init':function(proto, arg1) {
@@ -131,7 +133,7 @@ Call module.scan(el) for all modules that have this method. Scan method is used 
 
 ```javascript
 pwf.register('scan_example', function() {
-	this.scan = function(el) 
+	this.scan = function(el)
 	{
 		console.log("Look, I'm scanning " + el.prop("tagName"));
 	};
