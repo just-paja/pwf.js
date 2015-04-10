@@ -4,7 +4,8 @@
 	"description":"Container for writing frontend modules",
 	"dependencies":{},
 	"devDependencies":{
-		"async":"*"
+		"async":"*",
+		"mocha":"^2.1"
 	},
 	"scripts":{
 		"test":"echo Running tests... && mocha --globals testRule"
