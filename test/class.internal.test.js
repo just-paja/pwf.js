@@ -31,6 +31,28 @@ describe('class internals', function() {
 	});
 
 
+	it('class instance internal methods', function() {
+		var obj;
+
+		pwf.reg_class('test.internal', {
+			'public':{
+				'type':function(proto, name) {
+					return proto.type(name);
+				}
+			},
+
+			'proto':{
+				'test':function(){}
+			}
+		});
+
+		obj = pwf.create('test.internal');
+
+		assert.equal(obj.type('test'), 'function');
+		assert.equal(obj.type('test2'), 'undefined');
+	});
+
+
 	it('class instance parents', function() {
 		var obj;
 
