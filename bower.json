@@ -12,6 +12,9 @@
 		"test",
 		"LICENSE",
 		"README.md",
-		".gitignore"
+		"package.json",
+		"lib/include.js",
+		".gitignore",
+		".travis.yml",
 	]
 }
