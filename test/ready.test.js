@@ -4,12 +4,10 @@ require('../lib/pwf');
 
 describe('module ready test', function() {
 	it('should test module status checking', function() {
-		assert.strictEqual(pwf.status('modr'), undefined, 'Should be undefined, the module does not exist yet.');
-
 		pwf.reg_module('modr', function() { this.is_ready = function() { return false; }; });
-		assert.strictEqual(pwf.status('modr'), false, 'Should be false, the module is not ready.');
+		assert.strictEqual(pwf.has('module', 'modr'), false, 'Should be false, the module is not ready.');
 
 		pwf.reg_module('modt', function() { this.is_ready = function() { return true; }; });
-		assert.strictEqual(pwf.status('modt'), true, 'Should be true, the module is ready.');
+		assert.strictEqual(pwf.has('module', 'modt'), true, 'Should be true, the module is ready.');
 	});
 });
