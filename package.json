@@ -5,7 +5,8 @@
 	"dependencies":{},
 	"devDependencies":{
 		"async":"*",
-		"mocha":"^2.1"
+		"mocha":"^2.1",
+		"istanbul":"^0.3"
 	},
 
 	"scripts":{
