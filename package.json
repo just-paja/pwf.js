@@ -10,7 +10,8 @@
 	},
 
 	"scripts":{
-		"test":"istanbul cover _mocha"
+		"test":"mocha",
+		"coverage":"istanbul cover _mocha"
 	},
 
 	"main":"lib/include.js",
