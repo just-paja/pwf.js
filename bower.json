@@ -15,6 +15,6 @@
 		"package.json",
 		"lib/include.js",
 		".gitignore",
-		".travis.yml",
+		".travis.yml"
 	]
 }
