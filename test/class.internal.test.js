@@ -64,6 +64,9 @@ describe('class internals', function() {
 		obj = pwf.create('test.parent.d');
 
 		assert.equal(obj.meta.parents.length, 3);
+		assert(~obj.meta.parents.indexOf('test.parent.a'));
+		assert(~obj.meta.parents.indexOf('test.parent.b'));
+		assert(~obj.meta.parents.indexOf('test.parent.c'));
 	});
 
 
