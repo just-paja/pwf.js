@@ -1,6 +1,7 @@
 {
 	"name":"pwf.js",
 
+	"license":"GPL-3.0",
 	"main":[
 		"lib/pwf.js",
 		"lib/models/container.js",

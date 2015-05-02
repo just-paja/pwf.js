@@ -21,7 +21,7 @@
 	},
 
 	"author":"just-paja <just-paja@gmail.com>",
-	"license":"GPLv3",
+	"license":"GPL-3.0",
 
 	"include":[
 		"lib/pwf",
